@@ -72,9 +72,23 @@ def add_task(task_id, description, status, due_date, priority):
     save_tasks_to_file(task_list)
     print(f'Task {task_id} added successfully!')
 
-def delete_task():
+def delete_task(task_id):
     # Function to delete a task
-    pass
+    task_list = load_tasks_from_file()
+    task_to_delete = None
+
+    for task in task_list:
+        print(task.task_id)
+        if task.task_id == task_id:
+            task_to_delete = task
+            break
+
+    if task_to_delete:
+        task_list.remove(task_to_delete)
+        save_tasks_to_file(task_list)
+        print(f'Task {task_id} deleted successfully!')
+    else:
+        print(f'Task {task_id} not found.')
 
 def list_tasks(tasks):
     if not tasks:
@@ -113,7 +127,10 @@ def main():
             print("Missing arguments for adding a task.")
     elif args.delete:
         # Implement the delete command
-        pass
+        if args.task_id:
+            delete_task(args.task_id)
+        else:
+            print("Missing arguments for deleting a task.")
     elif args.list:
         list_tasks(task_list)  # List all tasks
     elif args.update:
